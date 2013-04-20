@@ -9,42 +9,10 @@ using System.Windows.Forms;
 using ProcessMemoryReaderLib;
 using System.Globalization;
 using System.Diagnostics;
+using System.IO;
 
 namespace Tribes_Training_Tool
 {
-    public class Vector3
-    {
-        public float X;
-        public float Y;
-        public float Z;
-
-        public Vector3(float x, float y, float z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-        }
-
-        public Vector3()
-        {
-        }
-
-        public static Vector3 operator +(Vector3 a, Vector3 b)
-        {
-            return new Vector3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
-        }
-
-        public static float Distance(Vector3 a, Vector3 b)
-        {
-            float distance = 0;
-            distance += Math.Abs(a.X - b.X);
-            distance += Math.Abs(a.Y - b.Y);
-            distance += Math.Abs(a.Z - b.Z);
-            return distance;
-        }
-
-    }
-
     public partial class Form1 : Form
     {
         Process[] myProcess;
@@ -61,10 +29,10 @@ namespace Tribes_Training_Tool
                                         0x8C    //Z Speed                                       
                                         };
         int MainOffset = 0x238;
-                 
+
 
         PlayerData m_mainPlayerData = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
-        PlayerData m_AIData = new PlayerData(0x00FB40F4, new int[] { 0x10, 0x50, 0x250,  0x2B0, 0x2F4 });
+        PlayerData m_AIData = new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 });
         #endregion
 
         #region ------Map Spawns-------
@@ -90,11 +58,13 @@ namespace Tribes_Training_Tool
                                                    new Vector3(-560,7425,-17408)}};
         #endregion
 
+        PlayerDataVec m_mainPlayer = new PlayerDataVec();
+
         bool GameFound      = false;
         bool m_isRecording  = false;
         bool m_isPlayback = false;
-        List<Vector3> m_record = new List<Vector3>();
-        List<Vector3> m_recordVelocity = new List<Vector3>();
+        List<Vector3> m_replayPosition = new List<Vector3>();
+        List<Vector3> m_replayVelocity = new List<Vector3>();
         int m_playbackState;
         int PLAYBACKMAXDISTANCE = 50;
         PlayerData m_playBackPlayer;
@@ -117,7 +87,8 @@ namespace Tribes_Training_Tool
                         mainModule = myProcess[0].MainModule;
                         Mem.ReadProcess = myProcess[0];
                         Mem.OpenProcess();
-                        GameFound = true;                        
+                        GameFound = true;
+                        labelGameStatus.Text = "Ready";
                     }
                 }
             }
@@ -148,19 +119,15 @@ namespace Tribes_Training_Tool
 
             if (GameFound)
             {
-                int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayerData.baseAddress, 4, m_mainPlayerData.multiLevel);
-                
-                labelBaseGameAdress.Text = "" + myProcess[0].MainModule.BaseAddress;
-                label3.Text = m_mainPlayerData.baseAddress.ToString("x");
-                label2.Text = playerBase.ToString("x");                
-               
-                labelHealth.Text = "" + Mem.ReadInt(playerBase - MainOffset + PlayerOffsets[0]);
-                labelXPos.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]);
-                labelYPos.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]);
-                labelZPos.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]);
-                labelXSpeed.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[4]);
-                labelYSpeed.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[5]);
-                labelZSpeed.Text = "" + Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[6]);
+                UpdatePlayerInfo();
+
+                labelHealth.Text =  m_mainPlayer.health.ToString();
+                labelXPos.Text =    m_mainPlayer.position.x.ToString();
+                labelYPos.Text =    m_mainPlayer.position.y.ToString();
+                labelZPos.Text =    m_mainPlayer.position.z.ToString();
+                labelXSpeed.Text =  m_mainPlayer.velocity.x.ToString();
+                labelYSpeed.Text =  m_mainPlayer.velocity.y.ToString();
+                labelZSpeed.Text =  m_mainPlayer.velocity.z.ToString();
 
                 int aiBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_AIData.baseAddress, 4, m_AIData.multiLevel);
 
@@ -170,10 +137,7 @@ namespace Tribes_Training_Tool
                 labelAIZPos.Text = "" + Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[3]);
                 
                 CheckRecording();
-
             }
-            else
-                label2.Text = "False";
 
 
             try
@@ -190,29 +154,44 @@ namespace Tribes_Training_Tool
             }
         }
 
+        void UpdatePlayerInfo()
+        {
+            int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayerData.baseAddress, 4, m_mainPlayerData.multiLevel);
+
+            Vector3 pos = new Vector3(Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]),
+                                      Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]),
+                                      Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]));
+
+            Vector3 velo = new Vector3(Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[4]),
+                                       Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[5]),
+                                       Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[6]));
+
+            m_mainPlayer.Update( Mem.ReadInt(playerBase - MainOffset + PlayerOffsets[0]), pos, velo);
+        }
+
         void CheckRecording()
         {
             if (m_isRecording)
             {
                 int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayerData.baseAddress, 4, m_mainPlayerData.multiLevel);
                 Vector3 vec = new Vector3();
-                vec.X = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]);
-                vec.Y =Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]);
-                vec.Z =Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]);
-                m_record.Add(vec);
+                vec.x = m_mainPlayer.position.x;
+                vec.y = m_mainPlayer.position.y;
+                vec.z = m_mainPlayer.position.z;
+                m_replayPosition.Add(vec);
 
                 vec = new Vector3();
-                vec.X = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[4]);
-                vec.Y = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[5]);
-                vec.Z = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[6]);
-                m_recordVelocity.Add(vec);
+                vec.x = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[4]);
+                vec.y = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[5]);
+                vec.z = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[6]);
+                m_replayVelocity.Add(vec);
 
                 labelRecordPlayback.Text = "Recording";
 
             }
             else if (m_isPlayback)
             {
-                if (m_playbackState >= m_record.Count)
+                if (m_playbackState >= m_replayPosition.Count)
                 {
                     m_isPlayback = false;
                     return;
@@ -220,18 +199,17 @@ namespace Tribes_Training_Tool
 
                 int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_playBackPlayer.baseAddress, 4, m_playBackPlayer.multiLevel);
                 Vector3 vec = new Vector3();
-                vec.X = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]);
-                vec.Y = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]);
-                vec.Z = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]);
+                vec.x = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]);
+                vec.y = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]);
+                vec.z = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]);
 
-                float distance = Vector3.Distance(vec, m_record[m_playbackState]);
-                Debug.Print(distance.ToString());
-                if (distance > PLAYBACKMAXDISTANCE)
+                float distance = Vector3.Distance(vec, m_replayPosition[m_playbackState]); 
+                if (distance > PLAYBACKMAXDISTANCE)                                 //Make sure the player doesen't get to desynced
                 {
-                    SetPlayerPosition(m_playBackPlayer, m_record[m_playbackState]);
+                    SetPlayerPosition(m_playBackPlayer, m_replayPosition[m_playbackState]);
                 }
 
-                SetPlayerVelocity(m_playBackPlayer, m_recordVelocity[m_playbackState]);
+                SetPlayerVelocity(m_playBackPlayer, m_replayVelocity[m_playbackState]);
                 m_playbackState++;
 
                 labelRecordPlayback.Text = "Playback";
@@ -246,18 +224,18 @@ namespace Tribes_Training_Tool
         {
             int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + player.baseAddress, 4, player.multiLevel);
 
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[1], pos.X);
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[2], pos.Y);
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[3], pos.Z);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[1], pos.x);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[2], pos.y);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[3], pos.z);
         }
 
         void SetPlayerVelocity(PlayerData player, Vector3 velocity)
         {
             int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + player.baseAddress, 4, player.multiLevel);
 
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[4], velocity.X);
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[5], velocity.Y);
-            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[6], velocity.Z);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[4], velocity.x);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[5], velocity.y);
+            Mem.WriteFloat(playerBase - MainOffset + PlayerOffsets[6], velocity.z);
         }
 
         void SetHealth(PlayerData player, int health)
@@ -276,8 +254,8 @@ namespace Tribes_Training_Tool
             if (m_isRecording)
             {
                 m_isPlayback = false;
-                m_record.Clear();
-                m_recordVelocity.Clear();
+                m_replayPosition.Clear();
+                m_replayVelocity.Clear();
             }
         }
 
@@ -290,7 +268,7 @@ namespace Tribes_Training_Tool
                 m_playBackPlayer = m_mainPlayerData;
                 m_isRecording = false;
                 m_playbackState = 0;
-                SetPlayerPosition(m_playBackPlayer, m_record[0]);
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
             }
         }
 
@@ -303,7 +281,8 @@ namespace Tribes_Training_Tool
                 m_playBackPlayer = m_AIData;
                 m_isRecording = false;
                 m_playbackState = 0;
-                SetPlayerPosition(m_playBackPlayer, m_record[0]);
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+                SetHealth(m_playBackPlayer, 100000);                         //Give the bot lots of hp so he doesen't die while going on the path
             }
         }
 
@@ -375,5 +354,91 @@ namespace Tribes_Training_Tool
         }
 
         #endregion
+
+        private void buttonImportReplay_Click(object sender, EventArgs e)
+        {
+            Stream myStream = null;
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            openFileDialog1.InitialDirectory = "c:\\";
+            openFileDialog1.Filter = "replay files (*.replay)|*.replay|All files (*.*)|*.*";
+            openFileDialog1.FilterIndex = 2;
+            openFileDialog1.RestoreDirectory = true;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = openFileDialog1.OpenFile()) != null)
+                    {
+                        using (myStream)
+                        {
+                            m_replayPosition.Clear();
+                            m_replayVelocity.Clear();
+
+                            StreamReader sr = new StreamReader(myStream);
+
+                            string line;
+                            while ((line = sr.ReadLine()) != null)
+                            {
+                                string[] posSplit = line.Split('.');
+                                Vector3 vec = new Vector3(float.Parse(posSplit[0]), float.Parse(posSplit[1]), float.Parse(posSplit[2]));
+                                Vector3 vel = new Vector3(float.Parse(posSplit[3]), float.Parse(posSplit[4]), float.Parse(posSplit[5]));
+                                m_replayPosition.Add(vec);
+                                m_replayVelocity.Add(vel);
+                            }
+
+                           /* string wholeString = sr.ReadToEnd();
+
+                            string[] posList = wholeString.Split('+');
+                            foreach (string str in posList)
+                            {
+                                string[] posSplit = str.Split('.');
+                                Vector3 vec = new Vector3(float.Parse(posSplit[0]), float.Parse(posSplit[1]), float.Parse(posSplit[2]));
+                                Vector3 vel = new Vector3(float.Parse(posSplit[3]), float.Parse(posSplit[4]), float.Parse(posSplit[5]));
+                                m_replayPosition.Add(vec);
+                                m_replayVelocity.Add(vel);
+                            }*/
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+        }
+
+        private void buttonExportReplay_Click(object sender, EventArgs e)
+        {
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "replay files (*.replay)|*.replay|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 1;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    StreamWriter sw = new StreamWriter(myStream);
+                    sw.Flush();
+                    int i = 0;
+                    foreach (Vector3 vec in m_replayPosition)
+                    {
+                        Vector3 vel = m_replayVelocity[i];                       
+
+                        string str = vec.x + "." + vec.y + "." + vec.z + "." + vel.x  + "." + vel.y  + "." + vel.z;
+                        sw.WriteLine(str);
+                        
+                        i++;
+                    }
+
+                    sw.Close();
+                    myStream.Close();
+                }
+            }
+        }
     }
 }

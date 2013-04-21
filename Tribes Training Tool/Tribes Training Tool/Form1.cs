@@ -180,7 +180,12 @@ namespace Tribes_Training_Tool
                 labelAIXPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.x.ToString();
                 labelAIYPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.y.ToString();
                 labelAIZPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.z.ToString();
-                
+
+                if (checkBoxDrunkMode.Checked)
+                {
+                    DrunkMode();
+                }
+
                 CheckRecording();
             }
 
@@ -198,6 +203,22 @@ namespace Tribes_Training_Tool
                 MessageBox.Show("There was an error " + ex.Message);
             }
 
+        }
+
+
+        Random random = new Random();
+        void DrunkMode()
+        {
+            int rnd = random.Next(100);
+            if (random.Next(750) < 10)
+            {
+                Vector3 vec = new Vector3();
+                vec.x = random.Next(2000) - 1000;
+                vec.y = random.Next(2000) - 1000;
+                vec.z = random.Next(2000) - 1000;
+                SetPlayerPosition(m_mainPlayer, m_mainPlayer.position + new Vector3(0,20,0));
+                SetPlayerVelocity(m_mainPlayer, vec);
+            }
         }
 
         void UpdatePlayerInfo()

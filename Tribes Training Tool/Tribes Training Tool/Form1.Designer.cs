@@ -109,11 +109,14 @@
             this.checkBoxReplayLoop = new System.Windows.Forms.CheckBox();
             this.checkBoxOnlyVelocity = new System.Windows.Forms.CheckBox();
             this.label33 = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBoxDrunkMode = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSelectedAi)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBoxGameChosie
@@ -349,7 +352,8 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(187, 0);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(183, -4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(611, 546);
@@ -936,6 +940,26 @@
             this.label33.TabIndex = 42;
             this.label33.Text = "For most cases it\'s best to leave this off";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.checkBoxDrunkMode);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(603, 520);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Misc";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDrunkMode
+            // 
+            this.checkBoxDrunkMode.AutoSize = true;
+            this.checkBoxDrunkMode.Location = new System.Drawing.Point(50, 60);
+            this.checkBoxDrunkMode.Name = "checkBoxDrunkMode";
+            this.checkBoxDrunkMode.Size = new System.Drawing.Size(85, 17);
+            this.checkBoxDrunkMode.TabIndex = 0;
+            this.checkBoxDrunkMode.Text = "Drunk Mode";
+            this.checkBoxDrunkMode.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -974,6 +998,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarSelectedAi)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1061,6 +1087,8 @@
         private System.Windows.Forms.CheckBox checkBoxReplayLoop;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.CheckBox checkBoxOnlyVelocity;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.CheckBox checkBoxDrunkMode;
     }
 }
 

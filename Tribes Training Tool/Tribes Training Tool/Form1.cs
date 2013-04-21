@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Diagnostics;
 using System.IO;
 
+
 namespace Tribes_Training_Tool
 {
     public partial class Form1 : Form
@@ -26,39 +27,63 @@ namespace Tribes_Training_Tool
                                         0x0,    //Z Pos
                                         0x90,   //X Speed
                                         0x94,   //Y Speed
-                                        0x8C    //Z Speed                                       
+                                        0x8C,   //Z Speed     
+                                        0x23C   //Max Health
                                         };
         int MainOffset = 0x238;
 
 
-        PlayerData m_mainPlayerData = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
+        PlayerData m_mainPlayer = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
         PlayerData m_AIData = new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 });
+        PlayerData m_AI2Data = new PlayerData(0x00FA7600, new int[] { 0x790, 0x94, 0x760, 0x90, 0x2F4 });
+        PlayerData[] m_AiPlayer = new PlayerData[] { new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 }),
+                                                    new PlayerData(0x00FA7600, new int[] { 0x790, 0x94, 0x760, 0x90, 0x2F4 })};
         #endregion
 
         #region ------Map Spawns-------
-        Vector3[,] DryDockSpawns = new Vector3[,] {{new Vector3(-22315,7345,13115),
+        Vector3[,] DryDockSpawns = new Vector3[,] {{new Vector3(-22315,7345,13115),     //Blood Eagle
                                                    new Vector3(-22273,6833,13649),
                                                    new Vector3(-15200,8625,-16672),
-                                                   new Vector3(20000,12000,10000)},
+                                                   new Vector3(-16641, 5425, -525)},
                                                    
-                                                   {new Vector3(15745,8625,-16816),
+                                                   {new Vector3(22326,7346,12967),     //Diamond Sword
                                                    new Vector3(22240,6833,13776),
-                                                   new Vector3(22992,7601,13088),
-                                                   new Vector3(22326,7346,12967)}};
+                                                   new Vector3(15745,8625,-16816),
+                                                   new Vector3(16608, 5426, -511)}};
 
 
-        Vector3[,] CrossfireSpawns = new Vector3[,] {{new Vector3(-1967,7437,18017),
+        Vector3[,] CrossfireSpawns = new Vector3[,] {{new Vector3(-1967,7437,18017),     //Blood Eagle
                                                    new Vector3(-6703,8251,19215),
                                                    new Vector3(7036,8853,20401),
                                                    new Vector3(-560,7425,17408)},
                                                    
-                                                   {new Vector3(880, 7436, -18000),
-                                                   new Vector3(-7632, 8853, -20978),
+                                                   {new Vector3(880, 7436, -18000),     //Diamond Sword
                                                    new Vector3(6111, 8252, -19791),
+                                                   new Vector3(-7632, 8853, -20978),
                                                    new Vector3(-560,7425,-17408)}};
+
+        Vector3[,] ArxSpawns = new Vector3[,]    {{new Vector3(-23960,6250,-14871),     //Blood Eagle
+                                                   new Vector3(-16593,5285,8914),
+                                                   new Vector3(-10823, 4859, -15252),
+                                                   new Vector3(-15542, 5106, -8432)},
+                                                   
+                                                   {new Vector3(23792, 6238, 14720),     //Diamond Sword
+                                                   new Vector3(16585, 5286, -8914),
+                                                   new Vector3(10541, 4894, 15708),
+                                                   new Vector3(15540, 5105, 8445)}};
+
+        Vector3[,] KatabaticSpawns = new Vector3[,]{{new Vector3(-11635, 10665, 20520),     //Blood Eagle
+                                                   new Vector3(-16250, 10945, 22710),
+                                                   new Vector3(-19020, 11330, 5725),
+                                                   new Vector3(-17760, 9330, 13565)},
+                                                   
+                                                   {new Vector3(14465, 10670, -16310),     //Diamond Sword
+                                                   new Vector3(25245, 11135, -5835),
+                                                   new Vector3(15175, 10275, -19340),
+                                                   new Vector3(19700, 9330, -11260)}};
         #endregion
 
-        PlayerDataVec m_mainPlayer = new PlayerDataVec();
+        //PlayerDataVec m_mainPlayer = new PlayerDataVec();
 
         bool GameFound      = false;
         bool m_isRecording  = false;
@@ -72,6 +97,7 @@ namespace Tribes_Training_Tool
         public Form1()
         {
             InitializeComponent();
+            KeyPreview = true;
         }
 
         private void comboBoxGameChosie_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,7 +106,7 @@ namespace Tribes_Training_Tool
             {
                 for (int i = 0; i < myProcess.Length; i++)
                 {
-                    Debug.Print(comboBoxGameChosie.Text.Replace(myProcess[i].ProcessName + "-", ""));
+                    //Debug.Print(comboBoxGameChosie.Text.Replace(myProcess[i].ProcessName + "-", ""));
                     if (comboBoxGameChosie.SelectedItem.ToString().Contains(myProcess[i].ProcessName))
                     {
                         myProcess[0] = Process.GetProcessById(int.Parse(comboBoxGameChosie.Text.Replace(myProcess[i].ProcessName + "-", "")));
@@ -108,33 +134,52 @@ namespace Tribes_Training_Tool
             }
         }
 
-
+        Timer timer = new Timer();
         private void Form1_Load(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
+            timer.Mode = TimerMode.Periodic;
+            timer.Period = 10;
+            timer.Resolution = 1;
+            timer.SynchronizingObject = this;
+
+            timer.Tick += timer1_Tick;
+
+            timer.Start();
+            stopwatch.Start();
         }
 
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();   //Stop it calling the form when the form is closing down
+        }
+ 
+
+        Stopwatch stopwatch = new Stopwatch();
         private void timer1_Tick(object sender, EventArgs e)
         {
+            labelTimerSpeed.Text = stopwatch.ElapsedMilliseconds.ToString();
+            stopwatch.Restart();
 
             if (GameFound)
             {
                 UpdatePlayerInfo();
 
                 labelHealth.Text =  m_mainPlayer.health.ToString();
-                labelXPos.Text =    m_mainPlayer.position.x.ToString();
-                labelYPos.Text =    m_mainPlayer.position.y.ToString();
-                labelZPos.Text =    m_mainPlayer.position.z.ToString();
+                labelXPos.Text   =  m_mainPlayer.position.x.ToString();
+                labelYPos.Text   =  m_mainPlayer.position.y.ToString();
+                labelZPos.Text   =  m_mainPlayer.position.z.ToString();
                 labelXSpeed.Text =  m_mainPlayer.velocity.x.ToString();
                 labelYSpeed.Text =  m_mainPlayer.velocity.y.ToString();
                 labelZSpeed.Text =  m_mainPlayer.velocity.z.ToString();
 
-                int aiBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_AIData.baseAddress, 4, m_AIData.multiLevel);
 
-                labelAIHealth.Text = "" + Mem.ReadInt(aiBase - MainOffset + PlayerOffsets[0]);
-                labelAIXPos.Text = "" + Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[1]);
-                labelAIYPos.Text = "" + Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[2]);
-                labelAIZPos.Text = "" + Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[3]);
+                int selectedAi = trackBarSelectedAi.Value;
+
+                labelAIHealth.Text = m_AiPlayer[trackBarSelectedAi.Value].health.ToString();
+                labelAIXPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.x.ToString();
+                labelAIYPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.y.ToString();
+                labelAIZPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.z.ToString();
                 
                 CheckRecording();
             }
@@ -152,11 +197,14 @@ namespace Tribes_Training_Tool
             {
                 MessageBox.Show("There was an error " + ex.Message);
             }
+
         }
 
         void UpdatePlayerInfo()
         {
-            int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayerData.baseAddress, 4, m_mainPlayerData.multiLevel);
+            int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayer.baseAddress, 4, m_mainPlayer.multiLevel);
+
+            int hp = Mem.ReadInt(playerBase - MainOffset + PlayerOffsets[0]);
 
             Vector3 pos = new Vector3(Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]),
                                       Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]),
@@ -166,14 +214,34 @@ namespace Tribes_Training_Tool
                                        Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[5]),
                                        Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[6]));
 
+           
+
             m_mainPlayer.Update( Mem.ReadInt(playerBase - MainOffset + PlayerOffsets[0]), pos, velo);
+
+            
+            foreach (PlayerData ai in m_AiPlayer)
+            {
+                int aiBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + ai.baseAddress, 4, ai.multiLevel);
+
+                hp = Mem.ReadInt(aiBase - MainOffset + PlayerOffsets[0]);
+
+                pos = new Vector3(Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[1]),
+                                          Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[2]),
+                                          Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[3]));
+
+                velo = new Vector3(Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[4]),
+                                   Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[5]),
+                                    Mem.ReadFloat(aiBase - MainOffset + PlayerOffsets[6]));
+
+                ai.Update(hp, pos, velo);
+            }
         }
 
         void CheckRecording()
         {
             if (m_isRecording)
             {
-                int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayerData.baseAddress, 4, m_mainPlayerData.multiLevel);
+                int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayer.baseAddress, 4, m_mainPlayer.multiLevel);
                 Vector3 vec = new Vector3();
                 vec.x = m_mainPlayer.position.x;
                 vec.y = m_mainPlayer.position.y;
@@ -191,24 +259,58 @@ namespace Tribes_Training_Tool
             }
             else if (m_isPlayback)
             {
+                //Stop at the end of the replay or restart íf loop is checked
                 if (m_playbackState >= m_replayPosition.Count)
                 {
-                    m_isPlayback = false;
-                    return;
+                    if (checkBoxReplayLoop.Checked)
+                    {
+                        m_playbackState = 0;
+                        int hp = 1000;
+                        if (!int.TryParse(textBoxAIHp.Text, out hp))
+                        {
+                            textBoxAIHp.Text = "10000";
+                            hp = 10000;
+                        }
+                        SetHealth(m_playBackPlayer, hp);
+                        SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+                    }
+                    else
+                    {
+                        m_isPlayback = false;
+                        return;
+                    }
                 }
 
-                int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_playBackPlayer.baseAddress, 4, m_playBackPlayer.multiLevel);
-                Vector3 vec = new Vector3();
-                vec.x = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[1]);
-                vec.y = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[2]);
-                vec.z = Mem.ReadFloat(playerBase - MainOffset + PlayerOffsets[3]);
-
-                float distance = Vector3.Distance(vec, m_replayPosition[m_playbackState]); 
-                if (distance > PLAYBACKMAXDISTANCE)                                 //Make sure the player doesen't get to desynced
+                if (checkBoxReplayLoop.Checked)
                 {
-                    SetPlayerPosition(m_playBackPlayer, m_replayPosition[m_playbackState]);
+                    //Stop having dead bodies flying around
+                    if (m_playBackPlayer.isDead)
+                    {
+                        return;
+                    }
+
+                    if(m_playBackPlayer.respawned)
+                    {
+                        m_playbackState = 0;
+                        int hp = 800;
+                        if (!int.TryParse(textBoxAIHp.Text, out hp))
+                        {
+                            textBoxAIHp.Text = "10000";
+                            hp = 800;
+                        }
+                        SetHealth(m_playBackPlayer, hp);
+                        SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+                    }
                 }
 
+                if (!checkBoxOnlyVelocity.Checked)
+                {
+                    float distance = Vector3.Distance(m_playBackPlayer.position, m_replayPosition[m_playbackState]);
+                    if (distance > PLAYBACKMAXDISTANCE)                                 //Make sure the player doesen't get to desynced
+                    {
+                        SetPlayerPosition(m_playBackPlayer, m_replayPosition[m_playbackState]);
+                    }
+                }
                 SetPlayerVelocity(m_playBackPlayer, m_replayVelocity[m_playbackState]);
                 m_playbackState++;
 
@@ -243,72 +345,56 @@ namespace Tribes_Training_Tool
             int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + player.baseAddress, 4, player.multiLevel);
 
             Mem.WriteInt(playerBase - MainOffset + PlayerOffsets[0], health);
+            Mem.WriteInt(playerBase - MainOffset + PlayerOffsets[7], health);
         }
 
-
-
-        private void buttonRecord_Click(object sender, EventArgs e)
+        void SetReplayInfo()
         {
-            m_isRecording = !m_isRecording;
-
-            if (m_isRecording)
-            {
-                m_isPlayback = false;
-                m_replayPosition.Clear();
-                m_replayVelocity.Clear();
-            }
+            labelReplaySize.Text = m_replayPosition.Count() / 100 + " seconds";
         }
-
-        private void buttonPlayback_Click(object sender, EventArgs e)
-        {
-            m_isPlayback = !m_isPlayback;
-
-            if (m_isPlayback)
-            {
-                m_playBackPlayer = m_mainPlayerData;
-                m_isRecording = false;
-                m_playbackState = 0;
-                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
-            }
-        }
-
-        private void buttonPlaybackAI_Click(object sender, EventArgs e)
-        {
-            m_isPlayback = !m_isPlayback;
-
-            if (m_isPlayback)
-            {
-                m_playBackPlayer = m_AIData;
-                m_isRecording = false;
-                m_playbackState = 0;
-                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
-                SetHealth(m_playBackPlayer, 100000);                         //Give the bot lots of hp so he doesen't die while going on the path
-            }
-        }
-
-
 
         void SpawnButton(int team, int id)
         {
-            if (comboBoxMap.SelectedIndex == 0)
+            if (comboBoxMap.Text == "DryDock")
             {
-                SetPlayerPosition(m_mainPlayerData, DryDockSpawns[team, id]);
+                SetPlayerPosition(m_mainPlayer, DryDockSpawns[team, id]);
             }
-            else if (comboBoxMap.SelectedIndex == 1)
+            else if (comboBoxMap.Text == "CrossFire")
             {
-                SetPlayerPosition(m_mainPlayerData, CrossfireSpawns[team, id]);
+                SetPlayerPosition(m_mainPlayer, CrossfireSpawns[team, id]);
+            }
+            else if (comboBoxMap.Text == "Arx Novena")
+            {
+                SetPlayerPosition(m_mainPlayer, ArxSpawns[team, id]);
+            }
+            else if (comboBoxMap.Text == "Katabatic")
+            {
+                SetPlayerPosition(m_mainPlayer, KatabaticSpawns[team, id]);
             }
         }
 
+        #region ------BUTTONS-----
+
         #region HEALTH BUTTONS
+
+        private void buttonSetHealth1_Click(object sender, EventArgs e)
+        {
+            SetHealth(m_mainPlayer, 1);
+        }
+
         private void buttonSetHealth900_Click(object sender, EventArgs e)
         {
-            SetHealth(m_mainPlayerData, 900);
+            SetHealth(m_mainPlayer, 900);
+        }
+
+        private void buttonSetHealth1200_Click(object sender, EventArgs e)
+        {
+            SetHealth(m_mainPlayer, 1200);
         }
 
         private void button2SetHealth1000000_Click(object sender, EventArgs e)
         {
-            SetHealth(m_mainPlayerData, 1000000);
+            SetHealth(m_mainPlayer, 1000000);
         }
         #endregion
 
@@ -355,6 +441,64 @@ namespace Tribes_Training_Tool
 
         #endregion
 
+        #region REPLAY BUTTONS
+        private void buttonRecord_Click(object sender, EventArgs e)
+        {
+            m_isRecording = !m_isRecording;
+
+            if (m_isRecording)
+            {
+                m_isPlayback = false;
+                m_replayPosition.Clear();
+                m_replayVelocity.Clear();
+            }
+            else
+            {
+                SetReplayInfo();
+            }
+        }
+
+        private void buttonPlayback_Click(object sender, EventArgs e)
+        {
+            m_isPlayback = !m_isPlayback;
+
+            if (m_isPlayback && m_replayPosition.Count > 0)
+            {
+                m_playBackPlayer = m_mainPlayer;
+
+                m_isRecording = false;
+                SetReplayInfo();
+                m_playbackState = 0;
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+            }
+        }
+
+
+        private void buttonPlaybackAI_Click(object sender, EventArgs e)
+        {
+            m_isPlayback = !m_isPlayback;
+
+            if (m_isPlayback && m_replayPosition.Count > 0)
+            {
+                int selectedAi = trackBarSelectedAi.Value;
+                m_playBackPlayer = m_AiPlayer[selectedAi];
+
+                m_isRecording = false;
+                SetReplayInfo();
+                m_playbackState = 0;
+
+                int hp = 1000;
+                if (!int.TryParse(textBoxAIHp.Text, out hp))
+                {
+                    textBoxAIHp.Text = "10000";
+                    hp = 10000;
+                }
+                
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+                SetHealth(m_playBackPlayer, hp);                         //Give the bot lots of hp so he doesen't die while going on the path
+            }
+        }
+
         private void buttonImportReplay_Click(object sender, EventArgs e)
         {
             Stream myStream = null;
@@ -387,18 +531,8 @@ namespace Tribes_Training_Tool
                                 m_replayPosition.Add(vec);
                                 m_replayVelocity.Add(vel);
                             }
-
-                           /* string wholeString = sr.ReadToEnd();
-
-                            string[] posList = wholeString.Split('+');
-                            foreach (string str in posList)
-                            {
-                                string[] posSplit = str.Split('.');
-                                Vector3 vec = new Vector3(float.Parse(posSplit[0]), float.Parse(posSplit[1]), float.Parse(posSplit[2]));
-                                Vector3 vel = new Vector3(float.Parse(posSplit[3]), float.Parse(posSplit[4]), float.Parse(posSplit[5]));
-                                m_replayPosition.Add(vec);
-                                m_replayVelocity.Add(vel);
-                            }*/
+                                                        
+                            SetReplayInfo();
                         }
                     }
                 }
@@ -427,11 +561,11 @@ namespace Tribes_Training_Tool
                     int i = 0;
                     foreach (Vector3 vec in m_replayPosition)
                     {
-                        Vector3 vel = m_replayVelocity[i];                       
+                        Vector3 vel = m_replayVelocity[i];
 
-                        string str = vec.x + "." + vec.y + "." + vec.z + "." + vel.x  + "." + vel.y  + "." + vel.z;
+                        string str = vec.x + "." + vec.y + "." + vec.z + "." + vel.x + "." + vel.y + "." + vel.z;
                         sw.WriteLine(str);
-                        
+
                         i++;
                     }
 
@@ -440,5 +574,38 @@ namespace Tribes_Training_Tool
                 }
             }
         }
+
+        #endregion
+
+        #region WARP BUTTONS
+        private void buttonWarp_Click(object sender, EventArgs e)
+        {
+            Vector3 vec = new Vector3();
+
+            if (!float.TryParse(textBoxWarpX.Text, out vec.x))
+                textBoxWarpX.Text = "";
+            if (!float.TryParse(textBoxWarpY.Text, out vec.y))
+                textBoxWarpY.Text = "";
+            if (!float.TryParse(textBoxWarpZ.Text, out vec.z))
+                textBoxWarpZ.Text = "";
+
+            if (textBoxWarpX.Text == "")
+                vec.x = m_mainPlayer.position.x;
+            if (textBoxWarpY.Text == "")
+                vec.y = m_mainPlayer.position.y;
+            if (textBoxWarpZ.Text == "")
+                vec.z = m_mainPlayer.position.z;
+            SetPlayerPosition(m_mainPlayer, vec);
+        }
+
+        private void buttonSavePos_Click(object sender, EventArgs e)
+        {
+            textBoxWarpX.Text = m_mainPlayer.position.x.ToString();
+            textBoxWarpY.Text = m_mainPlayer.position.y.ToString();
+            textBoxWarpZ.Text = m_mainPlayer.position.z.ToString();
+        }
+        #endregion
+
+        #endregion
     }
 }

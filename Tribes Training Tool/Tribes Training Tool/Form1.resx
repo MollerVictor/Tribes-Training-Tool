@@ -117,7 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="label30.Text" xml:space="preserve">
+    <value>Find the tribes game in the top right of this program, and select it.
+
+
+Note: Things the mention bots or ai only works on the "Target Practice" map
+Note: You need to spawn as pathfinder for this to work, you can change class after you spawn
+</value>
+  </data>
 </root>

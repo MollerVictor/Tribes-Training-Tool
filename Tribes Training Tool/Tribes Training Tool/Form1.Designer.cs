@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.comboBoxGameChosie = new System.Windows.Forms.ComboBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.labelHealth = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -54,7 +53,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonSetHealth1 = new System.Windows.Forms.Button();
+            this.buttonSetHealth1200 = new System.Windows.Forms.Button();
+            this.buttonSavePos = new System.Windows.Forms.Button();
             this.buttonWarp = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -64,6 +69,12 @@
             this.label18 = new System.Windows.Forms.Label();
             this.textBoxWarpX = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.textBoxAIHp = new System.Windows.Forms.TextBox();
+            this.labelReplaySize = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.buttonImportReplay = new System.Windows.Forms.Button();
             this.buttonExportReplay = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
@@ -93,9 +104,16 @@
             this.label17 = new System.Windows.Forms.Label();
             this.labelGameStatus = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
+            this.labelTimerSpeed = new System.Windows.Forms.Label();
+            this.trackBarSelectedAi = new System.Windows.Forms.TrackBar();
+            this.checkBoxReplayLoop = new System.Windows.Forms.CheckBox();
+            this.checkBoxOnlyVelocity = new System.Windows.Forms.CheckBox();
+            this.label33 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarSelectedAi)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBoxGameChosie
@@ -107,11 +125,6 @@
             this.comboBoxGameChosie.TabIndex = 0;
             this.comboBoxGameChosie.SelectedIndexChanged += new System.EventHandler(this.comboBoxGameChosie_SelectedIndexChanged);
             this.comboBoxGameChosie.Click += new System.EventHandler(this.comboBoxGameChosie_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 10;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // labelHealth
             // 
@@ -143,7 +156,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(20, 191);
+            this.label7.Location = new System.Drawing.Point(20, 185);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(35, 13);
             this.label7.TabIndex = 8;
@@ -152,7 +165,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(21, 221);
+            this.label8.Location = new System.Drawing.Point(20, 214);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(35, 13);
             this.label8.TabIndex = 9;
@@ -170,7 +183,7 @@
             // labelYPos
             // 
             this.labelYPos.AutoSize = true;
-            this.labelYPos.Location = new System.Drawing.Point(75, 191);
+            this.labelYPos.Location = new System.Drawing.Point(75, 185);
             this.labelYPos.Name = "labelYPos";
             this.labelYPos.Size = new System.Drawing.Size(43, 13);
             this.labelYPos.TabIndex = 11;
@@ -179,7 +192,7 @@
             // labelZPos
             // 
             this.labelZPos.AutoSize = true;
-            this.labelZPos.Location = new System.Drawing.Point(75, 221);
+            this.labelZPos.Location = new System.Drawing.Point(75, 214);
             this.labelZPos.Name = "labelZPos";
             this.labelZPos.Size = new System.Drawing.Size(43, 13);
             this.labelZPos.TabIndex = 12;
@@ -189,8 +202,10 @@
             // 
             this.comboBoxMap.FormattingEnabled = true;
             this.comboBoxMap.Items.AddRange(new object[] {
+            "Arx Novena",
+            "CrossFire",
             "DryDock",
-            "CrossFire"});
+            "Katabatic"});
             this.comboBoxMap.Location = new System.Drawing.Point(32, 53);
             this.comboBoxMap.Name = "comboBoxMap";
             this.comboBoxMap.Size = new System.Drawing.Size(121, 21);
@@ -278,7 +293,7 @@
             // 
             // buttonSetHealth900
             // 
-            this.buttonSetHealth900.Location = new System.Drawing.Point(238, 134);
+            this.buttonSetHealth900.Location = new System.Drawing.Point(240, 136);
             this.buttonSetHealth900.Name = "buttonSetHealth900";
             this.buttonSetHealth900.Size = new System.Drawing.Size(75, 23);
             this.buttonSetHealth900.TabIndex = 22;
@@ -288,7 +303,7 @@
             // 
             // button2SetHealth1000000
             // 
-            this.button2SetHealth1000000.Location = new System.Drawing.Point(319, 134);
+            this.button2SetHealth1000000.Location = new System.Drawing.Point(321, 163);
             this.button2SetHealth1000000.Name = "button2SetHealth1000000";
             this.button2SetHealth1000000.Size = new System.Drawing.Size(75, 23);
             this.button2SetHealth1000000.TabIndex = 23;
@@ -331,6 +346,7 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(187, 0);
@@ -339,8 +355,42 @@
             this.tabControl1.Size = new System.Drawing.Size(611, 546);
             this.tabControl1.TabIndex = 27;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label30);
+            this.tabPage3.Controls.Add(this.label29);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(603, 520);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Home";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(32, 77);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(452, 65);
+            this.label30.TabIndex = 1;
+            this.label30.Text = resources.GetString("label30.Text");
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(28, 38);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(125, 24);
+            this.label29.TabIndex = 0;
+            this.label29.Text = "How To Use";
+            // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonSetHealth1);
+            this.tabPage1.Controls.Add(this.buttonSetHealth1200);
+            this.tabPage1.Controls.Add(this.buttonSavePos);
             this.tabPage1.Controls.Add(this.buttonWarp);
             this.tabPage1.Controls.Add(this.label21);
             this.tabPage1.Controls.Add(this.label20);
@@ -371,6 +421,36 @@
             this.tabPage1.Text = "Route Training";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // buttonSetHealth1
+            // 
+            this.buttonSetHealth1.Location = new System.Drawing.Point(240, 163);
+            this.buttonSetHealth1.Name = "buttonSetHealth1";
+            this.buttonSetHealth1.Size = new System.Drawing.Size(75, 23);
+            this.buttonSetHealth1.TabIndex = 37;
+            this.buttonSetHealth1.Text = "1";
+            this.buttonSetHealth1.UseVisualStyleBackColor = true;
+            this.buttonSetHealth1.Click += new System.EventHandler(this.buttonSetHealth1_Click);
+            // 
+            // buttonSetHealth1200
+            // 
+            this.buttonSetHealth1200.Location = new System.Drawing.Point(321, 136);
+            this.buttonSetHealth1200.Name = "buttonSetHealth1200";
+            this.buttonSetHealth1200.Size = new System.Drawing.Size(75, 23);
+            this.buttonSetHealth1200.TabIndex = 36;
+            this.buttonSetHealth1200.Text = "1200";
+            this.buttonSetHealth1200.UseVisualStyleBackColor = true;
+            this.buttonSetHealth1200.Click += new System.EventHandler(this.buttonSetHealth1200_Click);
+            // 
+            // buttonSavePos
+            // 
+            this.buttonSavePos.Location = new System.Drawing.Point(28, 442);
+            this.buttonSavePos.Name = "buttonSavePos";
+            this.buttonSavePos.Size = new System.Drawing.Size(125, 23);
+            this.buttonSavePos.TabIndex = 35;
+            this.buttonSavePos.Text = "Set To Current Position";
+            this.buttonSavePos.UseVisualStyleBackColor = true;
+            this.buttonSavePos.Click += new System.EventHandler(this.buttonSavePos_Click);
+            // 
             // buttonWarp
             // 
             this.buttonWarp.Location = new System.Drawing.Point(48, 401);
@@ -379,6 +459,7 @@
             this.buttonWarp.TabIndex = 34;
             this.buttonWarp.Text = "Warp";
             this.buttonWarp.UseVisualStyleBackColor = true;
+            this.buttonWarp.Click += new System.EventHandler(this.buttonWarp_Click);
             // 
             // label21
             // 
@@ -443,6 +524,16 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label33);
+            this.tabPage2.Controls.Add(this.checkBoxOnlyVelocity);
+            this.tabPage2.Controls.Add(this.checkBoxReplayLoop);
+            this.tabPage2.Controls.Add(this.trackBarSelectedAi);
+            this.tabPage2.Controls.Add(this.label32);
+            this.tabPage2.Controls.Add(this.label31);
+            this.tabPage2.Controls.Add(this.textBoxAIHp);
+            this.tabPage2.Controls.Add(this.labelReplaySize);
+            this.tabPage2.Controls.Add(this.label28);
+            this.tabPage2.Controls.Add(this.label27);
             this.tabPage2.Controls.Add(this.buttonImportReplay);
             this.tabPage2.Controls.Add(this.buttonExportReplay);
             this.tabPage2.Controls.Add(this.label25);
@@ -470,9 +561,64 @@
             this.tabPage2.Text = "Route Replayer";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(143, 252);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(263, 13);
+            this.label32.TabIndex = 37;
+            this.label32.Text = "How much hp the ai starts with when you play a replay";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.Location = new System.Drawing.Point(18, 252);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(38, 13);
+            this.label31.TabIndex = 36;
+            this.label31.Text = "Ai Hp";
+            // 
+            // textBoxAIHp
+            // 
+            this.textBoxAIHp.Location = new System.Drawing.Point(62, 249);
+            this.textBoxAIHp.Name = "textBoxAIHp";
+            this.textBoxAIHp.Size = new System.Drawing.Size(75, 20);
+            this.textBoxAIHp.TabIndex = 35;
+            this.textBoxAIHp.Text = "10000";
+            // 
+            // labelReplaySize
+            // 
+            this.labelReplaySize.AutoSize = true;
+            this.labelReplaySize.Location = new System.Drawing.Point(507, 293);
+            this.labelReplaySize.Name = "labelReplaySize";
+            this.labelReplaySize.Size = new System.Drawing.Size(13, 13);
+            this.labelReplaySize.TabIndex = 34;
+            this.labelReplaySize.Text = "0";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(452, 293);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(40, 13);
+            this.label28.TabIndex = 33;
+            this.label28.Text = "Length";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(442, 241);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(114, 24);
+            this.label27.TabIndex = 32;
+            this.label27.Text = "Replay Info";
+            // 
             // buttonImportReplay
             // 
-            this.buttonImportReplay.Location = new System.Drawing.Point(21, 325);
+            this.buttonImportReplay.Location = new System.Drawing.Point(443, 422);
             this.buttonImportReplay.Name = "buttonImportReplay";
             this.buttonImportReplay.Size = new System.Drawing.Size(113, 23);
             this.buttonImportReplay.TabIndex = 31;
@@ -482,7 +628,7 @@
             // 
             // buttonExportReplay
             // 
-            this.buttonExportReplay.Location = new System.Drawing.Point(21, 282);
+            this.buttonExportReplay.Location = new System.Drawing.Point(443, 379);
             this.buttonExportReplay.Name = "buttonExportReplay";
             this.buttonExportReplay.Size = new System.Drawing.Size(113, 23);
             this.buttonExportReplay.TabIndex = 30;
@@ -503,20 +649,22 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(110, 126);
+            this.label24.Location = new System.Drawing.Point(110, 136);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(135, 26);
+            this.label24.Size = new System.Drawing.Size(278, 26);
             this.label24.TabIndex = 28;
-            this.label24.Text = "Plays back your recording, \r\nwith a bot insted of you";
+            this.label24.Text = "Plays back your recording, \r\nwith a bot insted of you only works on target practi" +
+                "ce map\r\n";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(110, 94);
+            this.label23.Location = new System.Drawing.Point(110, 99);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(129, 13);
+            this.label23.Size = new System.Drawing.Size(270, 26);
             this.label23.TabIndex = 27;
-            this.label23.Text = "Plays back your recording";
+            this.label23.Text = "Plays back your recording\r\nNote: Hold down ski during the playback for best resul" +
+                "ts";
             // 
             // label22
             // 
@@ -530,16 +678,16 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(18, 169);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(18, 178);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 13);
+            this.label3.Size = new System.Drawing.Size(98, 16);
             this.label3.TabIndex = 25;
-            this.label3.Text = "Current State:";
+            this.label3.Text = "Replay State";
             // 
             // buttonPlaybackAI
             // 
-            this.buttonPlaybackAI.Location = new System.Drawing.Point(21, 126);
+            this.buttonPlaybackAI.Location = new System.Drawing.Point(21, 136);
             this.buttonPlaybackAI.Name = "buttonPlaybackAI";
             this.buttonPlaybackAI.Size = new System.Drawing.Size(75, 23);
             this.buttonPlaybackAI.TabIndex = 24;
@@ -550,15 +698,16 @@
             // labelRecordPlayback
             // 
             this.labelRecordPlayback.AutoSize = true;
-            this.labelRecordPlayback.Location = new System.Drawing.Point(110, 169);
+            this.labelRecordPlayback.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRecordPlayback.Location = new System.Drawing.Point(122, 178);
             this.labelRecordPlayback.Name = "labelRecordPlayback";
-            this.labelRecordPlayback.Size = new System.Drawing.Size(24, 13);
+            this.labelRecordPlayback.Size = new System.Drawing.Size(30, 16);
             this.labelRecordPlayback.TabIndex = 23;
             this.labelRecordPlayback.Text = "Idle";
             // 
             // buttonPlayback
             // 
-            this.buttonPlayback.Location = new System.Drawing.Point(21, 89);
+            this.buttonPlayback.Location = new System.Drawing.Point(21, 94);
             this.buttonPlayback.Name = "buttonPlayback";
             this.buttonPlayback.Size = new System.Drawing.Size(75, 23);
             this.buttonPlayback.TabIndex = 22;
@@ -651,7 +800,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(20, 304);
+            this.label16.Location = new System.Drawing.Point(21, 304);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(48, 13);
             this.label16.TabIndex = 32;
@@ -660,7 +809,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(20, 274);
+            this.label15.Location = new System.Drawing.Point(21, 274);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(48, 13);
             this.label15.TabIndex = 31;
@@ -669,7 +818,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(21, 248);
+            this.label10.Location = new System.Drawing.Point(20, 243);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 13);
             this.label10.TabIndex = 30;
@@ -696,7 +845,7 @@
             // labelXSpeed
             // 
             this.labelXSpeed.AutoSize = true;
-            this.labelXSpeed.Location = new System.Drawing.Point(75, 248);
+            this.labelXSpeed.Location = new System.Drawing.Point(75, 243);
             this.labelXSpeed.Name = "labelXSpeed";
             this.labelXSpeed.Size = new System.Drawing.Size(43, 13);
             this.labelXSpeed.TabIndex = 27;
@@ -726,7 +875,7 @@
             // 
             this.labelGameStatus.AutoSize = true;
             this.labelGameStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGameStatus.Location = new System.Drawing.Point(119, 83);
+            this.labelGameStatus.Location = new System.Drawing.Point(119, 82);
             this.labelGameStatus.Name = "labelGameStatus";
             this.labelGameStatus.Size = new System.Drawing.Size(58, 13);
             this.labelGameStatus.TabIndex = 35;
@@ -741,11 +890,58 @@
             this.label26.TabIndex = 36;
             this.label26.Text = "Made By Fr0sZ";
             // 
+            // labelTimerSpeed
+            // 
+            this.labelTimerSpeed.AutoSize = true;
+            this.labelTimerSpeed.Location = new System.Drawing.Point(18, 438);
+            this.labelTimerSpeed.Name = "labelTimerSpeed";
+            this.labelTimerSpeed.Size = new System.Drawing.Size(41, 13);
+            this.labelTimerSpeed.TabIndex = 37;
+            this.labelTimerSpeed.Text = "label29";
+            // 
+            // trackBarSelectedAi
+            // 
+            this.trackBarSelectedAi.Location = new System.Drawing.Point(446, 178);
+            this.trackBarSelectedAi.Maximum = 1;
+            this.trackBarSelectedAi.Name = "trackBarSelectedAi";
+            this.trackBarSelectedAi.Size = new System.Drawing.Size(104, 45);
+            this.trackBarSelectedAi.TabIndex = 39;
+            // 
+            // checkBoxReplayLoop
+            // 
+            this.checkBoxReplayLoop.AutoSize = true;
+            this.checkBoxReplayLoop.Location = new System.Drawing.Point(21, 205);
+            this.checkBoxReplayLoop.Name = "checkBoxReplayLoop";
+            this.checkBoxReplayLoop.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxReplayLoop.TabIndex = 40;
+            this.checkBoxReplayLoop.Text = "Replay Loop";
+            this.checkBoxReplayLoop.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxOnlyVelocity
+            // 
+            this.checkBoxOnlyVelocity.AutoSize = true;
+            this.checkBoxOnlyVelocity.Location = new System.Drawing.Point(21, 226);
+            this.checkBoxOnlyVelocity.Name = "checkBoxOnlyVelocity";
+            this.checkBoxOnlyVelocity.Size = new System.Drawing.Size(106, 17);
+            this.checkBoxOnlyVelocity.TabIndex = 41;
+            this.checkBoxOnlyVelocity.Text = "Only use velocity";
+            this.checkBoxOnlyVelocity.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(143, 227);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(191, 13);
+            this.label33.TabIndex = 42;
+            this.label33.Text = "For most cases it\'s best to leave this off";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(798, 546);
+            this.Controls.Add(this.labelTimerSpeed);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.labelGameStatus);
             this.Controls.Add(this.tabControl1);
@@ -767,13 +963,17 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.labelHealth);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Tribes Training Tool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarSelectedAi)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -782,7 +982,6 @@
         #endregion
 
         private System.Windows.Forms.ComboBox comboBoxGameChosie;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label labelHealth;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
@@ -845,6 +1044,23 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label labelReplaySize;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label labelTimerSpeed;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox textBoxAIHp;
+        private System.Windows.Forms.Button buttonSavePos;
+        private System.Windows.Forms.Button buttonSetHealth1;
+        private System.Windows.Forms.Button buttonSetHealth1200;
+        private System.Windows.Forms.TrackBar trackBarSelectedAi;
+        private System.Windows.Forms.CheckBox checkBoxReplayLoop;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.CheckBox checkBoxOnlyVelocity;
     }
 }
 

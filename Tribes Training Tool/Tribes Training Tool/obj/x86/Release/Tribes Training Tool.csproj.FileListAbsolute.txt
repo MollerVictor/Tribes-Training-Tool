@@ -1,0 +1,11 @@
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\bin\Release\Tribes Training Tool.exe.manifest
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\bin\Release\Tribes Training Tool.application
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\bin\Release\Tribes Training Tool.exe
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\bin\Release\Tribes Training Tool.pdb
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes_Training_Tool.Form1.resources
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes_Training_Tool.Properties.Resources.resources
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.csproj.GenerateResource.Cache
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.exe.manifest
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.application
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.exe
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.pdb

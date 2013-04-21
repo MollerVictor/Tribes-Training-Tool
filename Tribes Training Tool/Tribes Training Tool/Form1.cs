@@ -33,7 +33,8 @@ namespace Tribes_Training_Tool
         int MainOffset = 0x238;
 
 
-        PlayerData m_mainPlayer = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
+        //PlayerData m_mainPlayer = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
+        PlayerData m_mainPlayer = new PlayerData(0x00FD08A8, new int[] { 0x1cc, 0x1ac, 0x24, 0xa4, 0x2F4 });
         PlayerData m_AIData = new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 });
         PlayerData m_AI2Data = new PlayerData(0x00FA7600, new int[] { 0x790, 0x94, 0x760, 0x90, 0x2F4 });
         PlayerData[] m_AiPlayer = new PlayerData[] { new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 }),

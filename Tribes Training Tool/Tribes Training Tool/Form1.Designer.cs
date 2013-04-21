@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.comboBoxGameChosie = new System.Windows.Forms.ComboBox();
             this.labelHealth = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -376,9 +375,10 @@
             this.label30.AutoSize = true;
             this.label30.Location = new System.Drawing.Point(32, 77);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(452, 65);
+            this.label30.Size = new System.Drawing.Size(367, 52);
             this.label30.TabIndex = 1;
-            this.label30.Text = resources.GetString("label30.Text");
+            this.label30.Text = "Find the tribes game in the top left of this program, and select it.\r\n\r\n\r\nNote: T" +
+                "hings the mention bots or ai only works on the \"Target Practice\" map\r\n";
             // 
             // label29
             // 

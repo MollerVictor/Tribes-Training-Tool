@@ -210,15 +210,14 @@ namespace Tribes_Training_Tool
         Random random = new Random();
         void DrunkMode()
         {
-            int rnd = random.Next(100);
             if (random.Next(750) < 10)
             {
                 Vector3 vec = new Vector3();
-                vec.x = random.Next(2000) - 1000;
-                vec.y = random.Next(2000) - 1000;
-                vec.z = random.Next(2000) - 1000;
-                SetPlayerPosition(m_mainPlayer, m_mainPlayer.position + new Vector3(0,20,0));
-                SetPlayerVelocity(m_mainPlayer, vec);
+                vec.x = random.Next(1500) - 750;
+                vec.y = 0;
+                vec.z = random.Next(1500) - 750;
+                SetPlayerPosition(m_mainPlayer, m_mainPlayer.position + new Vector3(0,2,0));
+                SetPlayerVelocity(m_mainPlayer,m_mainPlayer.velocity + vec);
             }
         }
 

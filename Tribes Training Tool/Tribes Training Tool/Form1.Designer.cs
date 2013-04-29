@@ -56,6 +56,15 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.textBoxWarpSpeedZ = new System.Windows.Forms.TextBox();
+            this.textBoxWarpSpeedY = new System.Windows.Forms.TextBox();
+            this.textBoxWarpSpeedX = new System.Windows.Forms.TextBox();
+            this.checkBoxWarpSaveVelocity = new System.Windows.Forms.CheckBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.checkBoxResetLife = new System.Windows.Forms.CheckBox();
             this.buttonSetHealth1 = new System.Windows.Forms.Button();
             this.buttonSetHealth1200 = new System.Windows.Forms.Button();
             this.buttonSavePos = new System.Windows.Forms.Button();
@@ -68,6 +77,10 @@
             this.label18 = new System.Windows.Forms.Label();
             this.textBoxWarpX = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label33 = new System.Windows.Forms.Label();
+            this.checkBoxOnlyVelocity = new System.Windows.Forms.CheckBox();
+            this.checkBoxReplayLoop = new System.Windows.Forms.CheckBox();
+            this.trackBarSelectedAi = new System.Windows.Forms.TrackBar();
             this.label32 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.textBoxAIHp = new System.Windows.Forms.TextBox();
@@ -93,6 +106,8 @@
             this.labelAIXPos = new System.Windows.Forms.Label();
             this.labelAIYPos = new System.Windows.Forms.Label();
             this.labelAIZPos = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBoxDrunkMode = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -104,12 +119,8 @@
             this.labelGameStatus = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.labelTimerSpeed = new System.Windows.Forms.Label();
-            this.trackBarSelectedAi = new System.Windows.Forms.TrackBar();
-            this.checkBoxReplayLoop = new System.Windows.Forms.CheckBox();
-            this.checkBoxOnlyVelocity = new System.Windows.Forms.CheckBox();
-            this.label33 = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.checkBoxDrunkMode = new System.Windows.Forms.CheckBox();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -365,7 +376,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(603, 520);
+            this.tabPage3.Size = new System.Drawing.Size(603, 514);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Home";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -392,6 +403,15 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label36);
+            this.tabPage1.Controls.Add(this.label37);
+            this.tabPage1.Controls.Add(this.label38);
+            this.tabPage1.Controls.Add(this.textBoxWarpSpeedZ);
+            this.tabPage1.Controls.Add(this.textBoxWarpSpeedY);
+            this.tabPage1.Controls.Add(this.textBoxWarpSpeedX);
+            this.tabPage1.Controls.Add(this.checkBoxWarpSaveVelocity);
+            this.tabPage1.Controls.Add(this.label35);
+            this.tabPage1.Controls.Add(this.checkBoxResetLife);
             this.tabPage1.Controls.Add(this.buttonSetHealth1);
             this.tabPage1.Controls.Add(this.buttonSetHealth1200);
             this.tabPage1.Controls.Add(this.buttonSavePos);
@@ -420,10 +440,95 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(603, 520);
+            this.tabPage1.Size = new System.Drawing.Size(603, 514);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Route Training";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.Location = new System.Drawing.Point(150, 380);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(23, 24);
+            this.label36.TabIndex = 46;
+            this.label36.Text = "Z";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.Location = new System.Drawing.Point(150, 357);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(23, 24);
+            this.label37.TabIndex = 45;
+            this.label37.Text = "Y";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.Location = new System.Drawing.Point(148, 333);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(25, 24);
+            this.label38.TabIndex = 44;
+            this.label38.Text = "X";
+            // 
+            // textBoxWarpSpeedZ
+            // 
+            this.textBoxWarpSpeedZ.Location = new System.Drawing.Point(183, 385);
+            this.textBoxWarpSpeedZ.Name = "textBoxWarpSpeedZ";
+            this.textBoxWarpSpeedZ.Size = new System.Drawing.Size(78, 20);
+            this.textBoxWarpSpeedZ.TabIndex = 43;
+            // 
+            // textBoxWarpSpeedY
+            // 
+            this.textBoxWarpSpeedY.Location = new System.Drawing.Point(183, 359);
+            this.textBoxWarpSpeedY.Name = "textBoxWarpSpeedY";
+            this.textBoxWarpSpeedY.Size = new System.Drawing.Size(78, 20);
+            this.textBoxWarpSpeedY.TabIndex = 42;
+            // 
+            // textBoxWarpSpeedX
+            // 
+            this.textBoxWarpSpeedX.Location = new System.Drawing.Point(183, 333);
+            this.textBoxWarpSpeedX.Name = "textBoxWarpSpeedX";
+            this.textBoxWarpSpeedX.Size = new System.Drawing.Size(78, 20);
+            this.textBoxWarpSpeedX.TabIndex = 41;
+            // 
+            // checkBoxWarpSaveVelocity
+            // 
+            this.checkBoxWarpSaveVelocity.AutoSize = true;
+            this.checkBoxWarpSaveVelocity.Checked = true;
+            this.checkBoxWarpSaveVelocity.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxWarpSaveVelocity.Location = new System.Drawing.Point(17, 472);
+            this.checkBoxWarpSaveVelocity.Name = "checkBoxWarpSaveVelocity";
+            this.checkBoxWarpSaveVelocity.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxWarpSaveVelocity.TabIndex = 40;
+            this.checkBoxWarpSaveVelocity.Text = "Save velocity";
+            this.checkBoxWarpSaveVelocity.UseVisualStyleBackColor = true;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.Location = new System.Drawing.Point(337, 331);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(206, 60);
+            this.label35.TabIndex = 39;
+            this.label35.Text = "F1-F8: Set Spawn\r\nF9:      Warp to\r\nF10:   Save Current Position";
+            // 
+            // checkBoxResetLife
+            // 
+            this.checkBoxResetLife.AutoSize = true;
+            this.checkBoxResetLife.Checked = true;
+            this.checkBoxResetLife.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxResetLife.Location = new System.Drawing.Point(17, 254);
+            this.checkBoxResetLife.Name = "checkBoxResetLife";
+            this.checkBoxResetLife.Size = new System.Drawing.Size(80, 17);
+            this.checkBoxResetLife.TabIndex = 38;
+            this.checkBoxResetLife.Text = "Reset Life?";
+            this.checkBoxResetLife.UseVisualStyleBackColor = true;
             // 
             // buttonSetHealth1
             // 
@@ -447,7 +552,7 @@
             // 
             // buttonSavePos
             // 
-            this.buttonSavePos.Location = new System.Drawing.Point(28, 442);
+            this.buttonSavePos.Location = new System.Drawing.Point(17, 443);
             this.buttonSavePos.Name = "buttonSavePos";
             this.buttonSavePos.Size = new System.Drawing.Size(125, 23);
             this.buttonSavePos.TabIndex = 35;
@@ -457,7 +562,7 @@
             // 
             // buttonWarp
             // 
-            this.buttonWarp.Location = new System.Drawing.Point(48, 401);
+            this.buttonWarp.Location = new System.Drawing.Point(17, 414);
             this.buttonWarp.Name = "buttonWarp";
             this.buttonWarp.Size = new System.Drawing.Size(75, 23);
             this.buttonWarp.TabIndex = 34;
@@ -469,7 +574,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(15, 360);
+            this.label21.Location = new System.Drawing.Point(15, 380);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(23, 24);
             this.label21.TabIndex = 33;
@@ -479,7 +584,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(15, 337);
+            this.label20.Location = new System.Drawing.Point(15, 357);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(23, 24);
             this.label20.TabIndex = 32;
@@ -489,7 +594,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(13, 313);
+            this.label19.Location = new System.Drawing.Point(13, 333);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(25, 24);
             this.label19.TabIndex = 31;
@@ -497,14 +602,14 @@
             // 
             // textBoxWarpZ
             // 
-            this.textBoxWarpZ.Location = new System.Drawing.Point(48, 365);
+            this.textBoxWarpZ.Location = new System.Drawing.Point(48, 385);
             this.textBoxWarpZ.Name = "textBoxWarpZ";
             this.textBoxWarpZ.Size = new System.Drawing.Size(78, 20);
             this.textBoxWarpZ.TabIndex = 30;
             // 
             // textBoxWarpY
             // 
-            this.textBoxWarpY.Location = new System.Drawing.Point(48, 339);
+            this.textBoxWarpY.Location = new System.Drawing.Point(48, 359);
             this.textBoxWarpY.Name = "textBoxWarpY";
             this.textBoxWarpY.Size = new System.Drawing.Size(78, 20);
             this.textBoxWarpY.TabIndex = 29;
@@ -513,7 +618,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(44, 274);
+            this.label18.Location = new System.Drawing.Point(44, 294);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(82, 24);
             this.label18.TabIndex = 28;
@@ -521,13 +626,14 @@
             // 
             // textBoxWarpX
             // 
-            this.textBoxWarpX.Location = new System.Drawing.Point(48, 313);
+            this.textBoxWarpX.Location = new System.Drawing.Point(48, 333);
             this.textBoxWarpX.Name = "textBoxWarpX";
             this.textBoxWarpX.Size = new System.Drawing.Size(78, 20);
             this.textBoxWarpX.TabIndex = 27;
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label39);
             this.tabPage2.Controls.Add(this.label33);
             this.tabPage2.Controls.Add(this.checkBoxOnlyVelocity);
             this.tabPage2.Controls.Add(this.checkBoxReplayLoop);
@@ -560,10 +666,47 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(603, 520);
+            this.tabPage2.Size = new System.Drawing.Size(603, 514);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Route Replayer";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(143, 227);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(191, 13);
+            this.label33.TabIndex = 42;
+            this.label33.Text = "For most cases it\'s best to leave this off";
+            // 
+            // checkBoxOnlyVelocity
+            // 
+            this.checkBoxOnlyVelocity.AutoSize = true;
+            this.checkBoxOnlyVelocity.Location = new System.Drawing.Point(21, 226);
+            this.checkBoxOnlyVelocity.Name = "checkBoxOnlyVelocity";
+            this.checkBoxOnlyVelocity.Size = new System.Drawing.Size(106, 17);
+            this.checkBoxOnlyVelocity.TabIndex = 41;
+            this.checkBoxOnlyVelocity.Text = "Only use velocity";
+            this.checkBoxOnlyVelocity.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxReplayLoop
+            // 
+            this.checkBoxReplayLoop.AutoSize = true;
+            this.checkBoxReplayLoop.Location = new System.Drawing.Point(21, 205);
+            this.checkBoxReplayLoop.Name = "checkBoxReplayLoop";
+            this.checkBoxReplayLoop.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxReplayLoop.TabIndex = 40;
+            this.checkBoxReplayLoop.Text = "Replay Loop";
+            this.checkBoxReplayLoop.UseVisualStyleBackColor = true;
+            // 
+            // trackBarSelectedAi
+            // 
+            this.trackBarSelectedAi.Location = new System.Drawing.Point(446, 178);
+            this.trackBarSelectedAi.Maximum = 1;
+            this.trackBarSelectedAi.Name = "trackBarSelectedAi";
+            this.trackBarSelectedAi.Size = new System.Drawing.Size(104, 45);
+            this.trackBarSelectedAi.TabIndex = 39;
             // 
             // label32
             // 
@@ -801,6 +944,26 @@
             this.labelAIZPos.TabIndex = 20;
             this.labelAIZPos.Text = "999999";
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.checkBoxDrunkMode);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(603, 514);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Misc";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDrunkMode
+            // 
+            this.checkBoxDrunkMode.AutoSize = true;
+            this.checkBoxDrunkMode.Location = new System.Drawing.Point(50, 60);
+            this.checkBoxDrunkMode.Name = "checkBoxDrunkMode";
+            this.checkBoxDrunkMode.Size = new System.Drawing.Size(85, 17);
+            this.checkBoxDrunkMode.TabIndex = 0;
+            this.checkBoxDrunkMode.Text = "Drunk Mode";
+            this.checkBoxDrunkMode.UseVisualStyleBackColor = true;
+            // 
             // label16
             // 
             this.label16.AutoSize = true;
@@ -903,68 +1066,31 @@
             this.labelTimerSpeed.TabIndex = 37;
             this.labelTimerSpeed.Text = "label29";
             // 
-            // trackBarSelectedAi
+            // label34
             // 
-            this.trackBarSelectedAi.Location = new System.Drawing.Point(446, 178);
-            this.trackBarSelectedAi.Maximum = 1;
-            this.trackBarSelectedAi.Name = "trackBarSelectedAi";
-            this.trackBarSelectedAi.Size = new System.Drawing.Size(104, 45);
-            this.trackBarSelectedAi.TabIndex = 39;
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(136, 529);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(40, 13);
+            this.label34.TabIndex = 2;
+            this.label34.Text = "0.1.2.0";
             // 
-            // checkBoxReplayLoop
+            // label39
             // 
-            this.checkBoxReplayLoop.AutoSize = true;
-            this.checkBoxReplayLoop.Location = new System.Drawing.Point(21, 205);
-            this.checkBoxReplayLoop.Name = "checkBoxReplayLoop";
-            this.checkBoxReplayLoop.Size = new System.Drawing.Size(86, 17);
-            this.checkBoxReplayLoop.TabIndex = 40;
-            this.checkBoxReplayLoop.Text = "Replay Loop";
-            this.checkBoxReplayLoop.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxOnlyVelocity
-            // 
-            this.checkBoxOnlyVelocity.AutoSize = true;
-            this.checkBoxOnlyVelocity.Location = new System.Drawing.Point(21, 226);
-            this.checkBoxOnlyVelocity.Name = "checkBoxOnlyVelocity";
-            this.checkBoxOnlyVelocity.Size = new System.Drawing.Size(106, 17);
-            this.checkBoxOnlyVelocity.TabIndex = 41;
-            this.checkBoxOnlyVelocity.Text = "Only use velocity";
-            this.checkBoxOnlyVelocity.UseVisualStyleBackColor = true;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(143, 227);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(191, 13);
-            this.label33.TabIndex = 42;
-            this.label33.Text = "For most cases it\'s best to leave this off";
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.checkBoxDrunkMode);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(603, 514);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Misc";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxDrunkMode
-            // 
-            this.checkBoxDrunkMode.AutoSize = true;
-            this.checkBoxDrunkMode.Location = new System.Drawing.Point(50, 60);
-            this.checkBoxDrunkMode.Name = "checkBoxDrunkMode";
-            this.checkBoxDrunkMode.Size = new System.Drawing.Size(85, 17);
-            this.checkBoxDrunkMode.TabIndex = 0;
-            this.checkBoxDrunkMode.Text = "Drunk Mode";
-            this.checkBoxDrunkMode.UseVisualStyleBackColor = true;
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.Location = new System.Drawing.Point(17, 367);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(119, 60);
+            this.label39.TabIndex = 43;
+            this.label39.Text = "F1: Record\r\nF2: Playback\r\nF3: Playback AI";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(798, 546);
+            this.Controls.Add(this.label34);
             this.Controls.Add(this.labelTimerSpeed);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.labelGameStatus);
@@ -1089,6 +1215,17 @@
         private System.Windows.Forms.CheckBox checkBoxOnlyVelocity;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.CheckBox checkBoxDrunkMode;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.CheckBox checkBoxResetLife;
+        private System.Windows.Forms.CheckBox checkBoxWarpSaveVelocity;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox textBoxWarpSpeedZ;
+        private System.Windows.Forms.TextBox textBoxWarpSpeedY;
+        private System.Windows.Forms.TextBox textBoxWarpSpeedX;
+        private System.Windows.Forms.Label label39;
     }
 }
 

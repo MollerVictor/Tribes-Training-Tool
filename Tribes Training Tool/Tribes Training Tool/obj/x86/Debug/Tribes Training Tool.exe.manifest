@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Tribes Training Tool.exe" size="52736">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Tribes Training Tool.exe" size="56832">
       <assemblyIdentity name="Tribes Training Tool" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>tkIo0fIHAdr+eEuxs1xocYqqv1I=</dsig:DigestValue>
+        <dsig:DigestValue>M24MflitFaD4ZRMxmVGP/2aXKpU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

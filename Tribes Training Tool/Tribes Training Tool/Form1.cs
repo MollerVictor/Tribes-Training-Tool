@@ -33,12 +33,22 @@ namespace Tribes_Training_Tool
         int MainOffset = 0x238;
 
 
-        //PlayerData m_mainPlayer = new PlayerData(0x00F67E90, new int[] { 0xF0, 0xEC, 0x1C, 0x14, 0x2F4 });
-        PlayerData m_mainPlayer = new PlayerData(0x00FD08A8, new int[] { 0x1cc, 0x1ac, 0x24, 0xa4, 0x2F4 });
-        PlayerData m_AIData = new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 });
-        PlayerData m_AI2Data = new PlayerData(0x00FA7600, new int[] { 0x790, 0x94, 0x760, 0x90, 0x2F4 });
-        PlayerData[] m_AiPlayer = new PlayerData[] { new PlayerData(0x00FB021C, new int[] { 0x19C, 0x10, 0x94, 0xF0, 0x2F4 }),
+        int[] BaseTurretOffsets = new int[]{0x0,  //Health
+                                            0x4,  //Max Health
+                                            0x38, //Armor
+                                            0x3C, //Armor Max
+                                            0x44, //Recharge rate
+                                            0x4C, //Marker Offset
+                                            0x5C, //Onhit armor show time     
+                                            0x60  //armor show timer
+                                            };
+
+        PlayerData m_mainPlayer = new PlayerData(0x00FDF330, new int[] { 0x310, 0x43c, 0x0, 0x1e4, 0x2F4 });
+        PlayerData[] m_AiPlayer = new PlayerData[] { new PlayerData(0x00FC65A4, new int[] { 0x28, 0xD4, 0x1D8, 0x94, 0x2F4 }),
                                                     new PlayerData(0x00FA7600, new int[] { 0x790, 0x94, 0x760, 0x90, 0x2F4 })};
+
+        PlayerData[] m_BaseTurrets = new PlayerData[] { new PlayerData(0x00FE0F6C, new int[] { 0x60, 0x28, 0x4CC, 0x28, 0x430 }) };
+
         #endregion
 
         #region ------Map Spawns-------
@@ -84,7 +94,9 @@ namespace Tribes_Training_Tool
                                                    new Vector3(19700, 9330, -11260)}};
         #endregion
 
-        //PlayerDataVec m_mainPlayer = new PlayerDataVec();
+
+        const int PLAYBACKMAXDISTANCE   = 750;
+        const float INPUTDELAY = 0.5f;
 
         bool GameFound      = false;
         bool m_isRecording  = false;
@@ -92,8 +104,9 @@ namespace Tribes_Training_Tool
         List<Vector3> m_replayPosition = new List<Vector3>();
         List<Vector3> m_replayVelocity = new List<Vector3>();
         int m_playbackState;
-        int PLAYBACKMAXDISTANCE = 50;
         PlayerData m_playBackPlayer;
+
+        float m_inputCooldown;
 
         public Form1()
         {
@@ -182,11 +195,8 @@ namespace Tribes_Training_Tool
                 labelAIYPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.y.ToString();
                 labelAIZPos.Text   = m_AiPlayer[trackBarSelectedAi.Value].position.z.ToString();
 
-                if (checkBoxDrunkMode.Checked)
-                {
-                    DrunkMode();
-                }
-
+                CheckInput();
+                Misc();
                 CheckRecording();
             }
 
@@ -206,6 +216,100 @@ namespace Tribes_Training_Tool
 
         }
 
+        
+
+        void CheckInput()
+        {
+            bool keyDown = false;
+            m_inputCooldown -= 0.01f;
+            if (m_inputCooldown <= 0)
+            {
+                if (tabControl1.SelectedIndex == 1)
+                {
+                    if (Mem.Keystate(Keys.F1))
+                    {
+                        SpawnButton(0, 0);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F2))
+                    {
+                        SpawnButton(0, 1);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F3))
+                    {
+                        SpawnButton(0, 2);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F4))
+                    {
+                        SpawnButton(0, 3);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F5))
+                    {
+                        SpawnButton(1, 0);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F6))
+                    {
+                        SpawnButton(1, 1);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F7))
+                    {
+                        SpawnButton(1, 2);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F8))
+                    {
+                        SpawnButton(1, 3);
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F9))
+                    {
+                        WarpTo();
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F10))
+                    {
+                        SavePosition();
+                        keyDown = true;
+                    }
+                }
+                else if (tabControl1.SelectedIndex == 2)
+                {
+                    if (Mem.Keystate(Keys.F1))
+                    {
+                        StartRecording();
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F2))
+                    {
+                        StartPlayback();
+                        keyDown = true;
+                    }
+                    else if (Mem.Keystate(Keys.F3))
+                    {
+                        StartPlaybackAI();
+                        keyDown = true;
+                    }
+                }
+
+                if (keyDown)
+                {
+                    m_inputCooldown = INPUTDELAY;
+                }
+            }
+        }
+
+        void Misc()
+        {
+            if (checkBoxDrunkMode.Checked)
+            {
+                DrunkMode();
+            }
+        }
 
         Random random = new Random();
         void DrunkMode()
@@ -323,10 +427,11 @@ namespace Tribes_Training_Tool
                         SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
                     }
                 }
-
+                
                 if (!checkBoxOnlyVelocity.Checked)
                 {
-                    float distance = Vector3.Distance(m_playBackPlayer.position, m_replayPosition[m_playbackState]);
+                    float distance = Vector3.SqrDistance(m_playBackPlayer.position, m_replayPosition[m_playbackState]);
+                    Debug.WriteLine("d:" + distance);
                     if (distance > PLAYBACKMAXDISTANCE)                                 //Make sure the player doesen't get to desynced
                     {
                         SetPlayerPosition(m_playBackPlayer, m_replayPosition[m_playbackState]);
@@ -376,6 +481,17 @@ namespace Tribes_Training_Tool
 
         void SpawnButton(int team, int id)
         {
+            int playerBase = Mem.ReadMultiLevelPointer(myProcess[0].MainModule.BaseAddress.ToInt32() + m_mainPlayer.baseAddress, 4, m_mainPlayer.multiLevel);
+
+            int maxHp = Mem.ReadInt(playerBase - MainOffset + PlayerOffsets[7]);
+
+            if (checkBoxResetLife.Checked)
+            {
+                SetHealth(m_mainPlayer, maxHp);
+            }
+
+            SetPlayerVelocity(m_mainPlayer, new Vector3(0,0,0));
+
             if (comboBoxMap.Text == "DryDock")
             {
                 SetPlayerPosition(m_mainPlayer, DryDockSpawns[team, id]);
@@ -391,6 +507,118 @@ namespace Tribes_Training_Tool
             else if (comboBoxMap.Text == "Katabatic")
             {
                 SetPlayerPosition(m_mainPlayer, KatabaticSpawns[team, id]);
+            }
+        }
+
+        void WarpTo()
+        {
+            Vector3 vec = new Vector3();
+
+            if (!float.TryParse(textBoxWarpX.Text, out vec.x))
+                textBoxWarpX.Text = "";
+            if (!float.TryParse(textBoxWarpY.Text, out vec.y))
+                textBoxWarpY.Text = "";
+            if (!float.TryParse(textBoxWarpZ.Text, out vec.z))
+                textBoxWarpZ.Text = "";
+
+            if (textBoxWarpX.Text == "")
+                vec.x = m_mainPlayer.position.x;
+            if (textBoxWarpY.Text == "")
+                vec.y = m_mainPlayer.position.y;
+            if (textBoxWarpZ.Text == "")
+                vec.z = m_mainPlayer.position.z;
+
+            SetPlayerPosition(m_mainPlayer, vec);
+
+            if (checkBoxWarpSaveVelocity.Checked)
+            {
+                Vector3 vel = new Vector3();
+
+                if (!float.TryParse(textBoxWarpSpeedX.Text, out vel.x))
+                    textBoxWarpSpeedX.Text = "";
+                if (!float.TryParse(textBoxWarpSpeedY.Text, out vel.y))
+                    textBoxWarpSpeedY.Text = "";
+                if (!float.TryParse(textBoxWarpSpeedZ.Text, out vel.z))
+                    textBoxWarpSpeedZ.Text = "";
+
+                if (textBoxWarpSpeedX.Text == "")
+                    vel.x = m_mainPlayer.velocity.x;
+                if (textBoxWarpSpeedY.Text == "")
+                    vel.y = m_mainPlayer.velocity.y;
+                if (textBoxWarpSpeedZ.Text == "")
+                    vel.z = m_mainPlayer.velocity.z;
+
+                SetPlayerVelocity(m_mainPlayer, vel);
+            }
+        }
+
+        void SavePosition()
+        {
+            textBoxWarpX.Text = m_mainPlayer.position.x.ToString();
+            textBoxWarpY.Text = m_mainPlayer.position.y.ToString();
+            textBoxWarpZ.Text = m_mainPlayer.position.z.ToString();
+
+            if (checkBoxWarpSaveVelocity.Checked)
+            {
+                textBoxWarpSpeedX.Text = m_mainPlayer.velocity.x.ToString();
+                textBoxWarpSpeedY.Text = m_mainPlayer.velocity.y.ToString();
+                textBoxWarpSpeedZ.Text = m_mainPlayer.velocity.z.ToString();
+            }
+        }
+
+        void StartRecording()
+        {
+            m_isRecording = !m_isRecording;
+
+            if (m_isRecording)
+            {
+                m_isPlayback = false;
+                m_replayPosition.Clear();
+                m_replayVelocity.Clear();
+            }
+            else
+            {
+                SetReplayInfo();
+            }
+        }
+
+        void StartPlayback()
+        {
+            m_isPlayback = !m_isPlayback;
+
+            if (m_isPlayback && m_replayPosition.Count > 0)
+            {
+                m_playBackPlayer = m_mainPlayer;
+
+                m_isRecording = false;
+                SetReplayInfo();
+                m_playbackState = 0;
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+            }
+        }
+
+        void StartPlaybackAI()
+        {
+            m_isPlayback = !m_isPlayback;
+
+            if (m_isPlayback && m_replayPosition.Count > 0)
+            {
+                int selectedAi = trackBarSelectedAi.Value;
+                m_playBackPlayer = m_AiPlayer[selectedAi];
+
+                m_isRecording = false;
+                SetReplayInfo();
+                m_playbackState = 0;
+
+                int hp = 1000;
+                if (!int.TryParse(textBoxAIHp.Text, out hp))
+                {
+                    textBoxAIHp.Text = "10000";
+                    hp = 10000;
+                }
+
+                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
+                SetHealth(m_playBackPlayer, hp);                         //Give the bot lots of hp so he doesen't die while going on the path
             }
         }
 
@@ -465,59 +693,18 @@ namespace Tribes_Training_Tool
         #region REPLAY BUTTONS
         private void buttonRecord_Click(object sender, EventArgs e)
         {
-            m_isRecording = !m_isRecording;
-
-            if (m_isRecording)
-            {
-                m_isPlayback = false;
-                m_replayPosition.Clear();
-                m_replayVelocity.Clear();
-            }
-            else
-            {
-                SetReplayInfo();
-            }
+            StartRecording();
         }
 
         private void buttonPlayback_Click(object sender, EventArgs e)
         {
-            m_isPlayback = !m_isPlayback;
-
-            if (m_isPlayback && m_replayPosition.Count > 0)
-            {
-                m_playBackPlayer = m_mainPlayer;
-
-                m_isRecording = false;
-                SetReplayInfo();
-                m_playbackState = 0;
-                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
-            }
+            StartPlayback();
         }
 
 
         private void buttonPlaybackAI_Click(object sender, EventArgs e)
         {
-            m_isPlayback = !m_isPlayback;
-
-            if (m_isPlayback && m_replayPosition.Count > 0)
-            {
-                int selectedAi = trackBarSelectedAi.Value;
-                m_playBackPlayer = m_AiPlayer[selectedAi];
-
-                m_isRecording = false;
-                SetReplayInfo();
-                m_playbackState = 0;
-
-                int hp = 1000;
-                if (!int.TryParse(textBoxAIHp.Text, out hp))
-                {
-                    textBoxAIHp.Text = "10000";
-                    hp = 10000;
-                }
-                
-                SetPlayerPosition(m_playBackPlayer, m_replayPosition[0]);
-                SetHealth(m_playBackPlayer, hp);                         //Give the bot lots of hp so he doesen't die while going on the path
-            }
+            StartPlaybackAI();
         }
 
         private void buttonImportReplay_Click(object sender, EventArgs e)
@@ -601,29 +788,12 @@ namespace Tribes_Training_Tool
         #region WARP BUTTONS
         private void buttonWarp_Click(object sender, EventArgs e)
         {
-            Vector3 vec = new Vector3();
-
-            if (!float.TryParse(textBoxWarpX.Text, out vec.x))
-                textBoxWarpX.Text = "";
-            if (!float.TryParse(textBoxWarpY.Text, out vec.y))
-                textBoxWarpY.Text = "";
-            if (!float.TryParse(textBoxWarpZ.Text, out vec.z))
-                textBoxWarpZ.Text = "";
-
-            if (textBoxWarpX.Text == "")
-                vec.x = m_mainPlayer.position.x;
-            if (textBoxWarpY.Text == "")
-                vec.y = m_mainPlayer.position.y;
-            if (textBoxWarpZ.Text == "")
-                vec.z = m_mainPlayer.position.z;
-            SetPlayerPosition(m_mainPlayer, vec);
+            WarpTo();
         }
 
         private void buttonSavePos_Click(object sender, EventArgs e)
         {
-            textBoxWarpX.Text = m_mainPlayer.position.x.ToString();
-            textBoxWarpY.Text = m_mainPlayer.position.y.ToString();
-            textBoxWarpZ.Text = m_mainPlayer.position.z.ToString();
+            SavePosition();
         }
         #endregion
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace Tribes_Training_Tool
 {
     public class Vector3
@@ -19,7 +20,7 @@ namespace Tribes_Training_Tool
         }
 
         public Vector3()
-        {
+        {            
         }
 
         public static Vector3 operator +(Vector3 a, Vector3 b)
@@ -32,13 +33,18 @@ namespace Tribes_Training_Tool
             return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
         }
 
-        public static float Distance(Vector3 a, Vector3 b)
+        public static float SqrDistance(Vector3 a, Vector3 b)
         {
             float distance = 0;
-            distance += Math.Abs(a.x - b.x);
-            distance += Math.Abs(a.y - b.y);
-            distance += Math.Abs(a.z - b.z);
+            distance += (float)Math.Pow(a.x - b.x, 2);
+            distance += (float)Math.Pow(a.y - b.y, 2);
+            distance += (float)Math.Pow(a.z - b.z, 2);
             return distance;
+        }
+
+        public static float Distance(Vector3 a, Vector3 b)
+        {
+            return (float)Math.Sqrt(SqrDistance(a,b));
         }
     }
 }

@@ -9,3 +9,4 @@ D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj
 D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.application
 D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.exe
 D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.pdb
+D:\Fr0sZ\Programming\Visual Studio\Tribes Training Tool\Tribes Training Tool\obj\x86\Release\Tribes Training Tool.csprojResolveAssemblyReference.cache

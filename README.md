@@ -1,6 +1,6 @@
 Tribes-Training-Tool
 ====================
 
-A program which allow you to train your tribes skill
+A program which allow you to train your Tribes: Ascend skills.
 
-By Fr0sZ
+##This program is no longer working.
